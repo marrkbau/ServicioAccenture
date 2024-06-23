@@ -28,21 +28,25 @@ const Compras = () => {
   };
 
   const handleSelectClient = (event) => {
+    if (event.target.value === "") {
+      setSelectedClient("");
+      setSelectedProducts([]);
+      return;
+    }
     setSelectedClient(event.target.value);
   };
-
 
   const createCompra = () => {
     alert("Compra generada");
     setSelectedClient("");
     setSelectedProducts([]);
-  }
+  };
 
   return (
     <Container>
       <Row>
         <Col>
-          <h1>Compras</h1>
+          <h1 style={{ color: "#550ed4" }}>Compras</h1>
         </Col>
       </Row>
       <Row>
@@ -63,7 +67,7 @@ const Compras = () => {
         <>
           <Row style={{ marginTop: "10px" }}>
             <Col>
-              <h5>Seleccionar Productos</h5>
+              <h5 style={{ color: "#550ed4" }}>Seleccionar Productos</h5>
               <ProductosTable
                 columns={columnsProducts}
                 data={dataProducts}

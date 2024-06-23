@@ -53,8 +53,8 @@ const NuevoClienteModal = ({ open, handleClose, cliente, create, edit }) => {
   };
   return (
     <Modal show={open} onHide={handleClose}>
-      <Modal.Header closeButton> 
-        <Modal.Title>Alta de Cliente</Modal.Title>
+      <Modal.Header closeButton style={{backgroundColor:'#550ed4'}} > 
+        <Modal.Title style={{color:"#6cdacd"}}>Alta de Cliente</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form noValidate validated={validated} onSubmit={handleSubmit}>

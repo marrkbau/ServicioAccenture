@@ -1,8 +1,8 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
-
+import bg from "../assets/bg-1.png";
 const NavBarComponent = () => {
   return (
-    <Navbar bg="dark" data-bs-theme="dark">
+    <Navbar className="navBar" data-bs-theme="dark">
       <Container>
         <Navbar.Brand href="/">Accenture</Navbar.Brand>
         <Nav className="me-auto">

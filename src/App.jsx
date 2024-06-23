@@ -20,8 +20,8 @@ function App() {
   return (
     <>
       <React.StrictMode>
-        <NavBarComponent />,
-        <RouterProvider router={router} />
+          <NavBarComponent />,
+          <RouterProvider router={router} />
       </React.StrictMode>
     </>
   );

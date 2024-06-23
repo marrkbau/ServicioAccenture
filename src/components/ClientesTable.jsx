@@ -51,7 +51,18 @@ const ClientesTable = ({ data, clienteCreate, clienteEdit }) => {
         create={clienteCreate}
         edit={clienteEdit}
       />
-      <Table striped bordered hover size="sm">
+      <Table
+        
+        responsive
+        striped
+        bordered
+        hover
+        size="sm"
+        style={{
+          borderColor: "#550ed4",
+          borderStyle: "solid",
+        }}
+      >
         <thead>
           <tr className="text-center">
             {columns.map((column) => (

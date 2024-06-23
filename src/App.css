@@ -1,5 +1,17 @@
+
 .selected {
     background-color: #6fffec;
     color: #333;
     --bs-table-bg: #6fffec;
 }
+
+.navBar {
+    background-image: url("./assets/bg-1.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.btn-primary {
+    --bs-btn-bg: #550ed4 !important;
+}
+

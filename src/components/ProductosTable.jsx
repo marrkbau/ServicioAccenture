@@ -17,7 +17,16 @@ const ProductosTable = ({ columns, data, dataFields, handleSelectProduct }) => {
   };
 
   return (
-    <Table striped bordered hover size="sm">
+    <Table
+      striped
+      bordered
+      hover
+      size="sm"
+      style={{
+        borderColor: "#550ed4",
+        borderStyle: "solid",
+      }}
+    >
       <thead>
         <tr>
           {columns.map((column) => (

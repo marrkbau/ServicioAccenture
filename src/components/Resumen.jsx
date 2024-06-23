@@ -8,7 +8,7 @@ const Resumen = ({
 }) => {
   return (
     <Card border="primary" style={{ width: "18rem" }}>
-      <Card.Header>Resumen</Card.Header>
+      <Card.Header className="text-center" style={{backgroundColor:"#550ed4", color:"#6cdacd"}}><strong>Resumen</strong></Card.Header>
       <Card.Body>
         <Card.Title>
           {dataClients.find((client) => client.id == selectedClient).nombre}{" "}
