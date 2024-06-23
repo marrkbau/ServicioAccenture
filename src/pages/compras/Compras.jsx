@@ -1,16 +1,29 @@
 import { Col, Container, Form, Row } from "react-bootstrap";
 import ProductosTable from "../../components/ProductosTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Resumen from "../../components/Resumen";
 import { getClientes } from "../../services/ClientesServices";
 import { getProductos } from "../../services/ProductosServices";
 
 const Compras = () => {
-  const dataProducts = getProductos();
-  const dataClients = getClientes();
-
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectedClient, setSelectedClient] = useState("");
+  const [dataClients, setDataClients] = useState(null);
+  const [dataProducts, setDataProducts] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const dataClient = await getClientes();
+      const dataProduct = await getProductos();
+
+      setTimeout(() => {
+        setDataClients(dataClient);
+        setDataProducts(dataProduct);
+      }, 2000);
+    };
+
+    fetchData();
+  });
 
   const handleSelectProduct = (product) => {
     if (selectedProducts.find((p) => p.id === product.id)) {
@@ -45,46 +58,52 @@ const Compras = () => {
 
   return (
     <Container>
-      <Row>
-        <Col>
-          <h1 style={{ color: "#550ed4" }}>Compras</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={4}></Col>
-        <Col className="d-flex gap-2 justify-content-center">
-          <Form.Select onChange={(e) => handleSelectClient(e)}>
-            <option value={""}>Selecciona un cliente</option>
-            {dataClients.map((client) => (
-              <option key={client.id} value={client.id}>
-                {client.nombre} {client.apellido}
-              </option>
-            ))}
-          </Form.Select>
-        </Col>
-        <Col xs={4}></Col>
-      </Row>
-      {selectedClient && (
+      {!dataClients || !dataProducts ? (
+        <p>Cargando...</p>
+      ) : (
         <>
-          <Row style={{ marginTop: "10px" }}>
+          <Row>
             <Col>
-              <h5 style={{ color: "#550ed4" }}>Seleccionar Productos</h5>
-              <ProductosTable
-                data={dataProducts}
-                handleSelectProduct={handleSelectProduct}
-              />
+              <h1 style={{ color: "#550ed4" }}>Compras</h1>
             </Col>
           </Row>
           <Row>
-            <Col className="d-flex justify-content-center">
-              <Resumen
-                dataClients={dataClients}
-                selectedClient={selectedClient}
-                selectedProducts={selectedProducts}
-                createCompra={createCompra}
-              />
+            <Col xs={4}></Col>
+            <Col className="d-flex gap-2 justify-content-center">
+              <Form.Select onChange={(e) => handleSelectClient(e)}>
+                <option value={""}>Selecciona un cliente</option>
+                {dataClients.map((client) => (
+                  <option key={client.id} value={client.id}>
+                    {client.nombre} {client.apellido}
+                  </option>
+                ))}
+              </Form.Select>
             </Col>
+            <Col xs={4}></Col>
           </Row>
+          {selectedClient && (
+            <>
+              <Row style={{ marginTop: "10px" }}>
+                <Col>
+                  <h5 style={{ color: "#550ed4" }}>Seleccionar Productos</h5>
+                  <ProductosTable
+                    data={dataProducts}
+                    handleSelectProduct={handleSelectProduct}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col className="d-flex justify-content-center">
+                  <Resumen
+                    dataClients={dataClients}
+                    selectedClient={selectedClient}
+                    selectedProducts={selectedProducts}
+                    createCompra={createCompra}
+                  />
+                </Col>
+              </Row>
+            </>
+          )}
         </>
       )}
     </Container>

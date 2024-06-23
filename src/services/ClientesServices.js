@@ -41,6 +41,7 @@ export function getClientes() {
       tipoCliente: "Particular",
     },
   ];
+
   return clientes;
 }
 
