@@ -1,15 +1,11 @@
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import ProductosTable from "../../components/ProductosTable";
 import { useState } from "react";
-import NuevoClienteModal from "../../components/NuevoClienteModal";
 import Resumen from "../../components/Resumen";
 import { getClientes } from "../../services/ClientesServices";
 import { getProductos } from "../../services/ProductosServices";
 
 const Compras = () => {
-  const columnsProducts = ["ID", "Producto", "Precio", "Cantidad", "Total"];
-  const dataFieldsProducts = ["id", "producto", "precio", "cantidad", "total"];
-
   const dataProducts = getProductos();
   const dataClients = getClientes();
 
@@ -33,11 +29,16 @@ const Compras = () => {
       setSelectedProducts([]);
       return;
     }
-    setSelectedClient(event.target.value);
+
+    setSelectedClient(
+      dataClients.find((client) => client.id === parseInt(event.target.value))
+    );
   };
 
-  const createCompra = () => {
-    alert("Compra generada");
+  const createCompra = (fechaEntrega, selectedProducts, selectedClient) => {
+    alert("Compra generada " + fechaEntrega);
+    alert("Cliente: " + selectedClient.nombre);
+    alert("Productos: " + selectedProducts.map((p) => p.nombre));
     setSelectedClient("");
     setSelectedProducts([]);
   };
@@ -69,9 +70,7 @@ const Compras = () => {
             <Col>
               <h5 style={{ color: "#550ed4" }}>Seleccionar Productos</h5>
               <ProductosTable
-                columns={columnsProducts}
                 data={dataProducts}
-                dataFields={dataFieldsProducts}
                 handleSelectProduct={handleSelectProduct}
               />
             </Col>

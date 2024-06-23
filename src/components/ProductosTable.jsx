@@ -1,8 +1,10 @@
 import Table from "react-bootstrap/Table";
 import { useState } from "react";
 
-const ProductosTable = ({ columns, data, dataFields, handleSelectProduct }) => {
+const ProductosTable = ({ data, handleSelectProduct }) => {
+  
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const columns = ["ID", "Producto", "Proveedor", "Precio", "Stock"];
 
   const handleSelect = (product) => {
     if (selectedProducts.includes(product.id)) {
@@ -40,9 +42,11 @@ const ProductosTable = ({ columns, data, dataFields, handleSelectProduct }) => {
             className={selectedProducts.includes(row.id) ? "selected" : ""}
             onClick={() => handleSelect(row)}
           >
-            {dataFields.map((field) => (
-              <td>{row[field]}</td>
-            ))}
+            <td>{row.id}</td>
+            <td>{row.nombre}</td>
+            <td>{row.proveedor}</td>
+            <td>{row.precio}</td>
+            <td>{row.stock}</td>
           </tr>
         ))}
       </tbody>

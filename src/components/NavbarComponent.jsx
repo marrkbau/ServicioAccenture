@@ -1,14 +1,26 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
-import bg from "../assets/bg-1.png";
+import { NavLink } from "react-router-dom";
+
 const NavBarComponent = () => {
   return (
     <Navbar className="navBar" data-bs-theme="dark">
       <Container>
-        <Navbar.Brand href="/">Accenture</Navbar.Brand>
+        <Navbar.Brand>
+          <NavLink className="nav-link-title" to="/">
+            Accenture
+          </NavLink>
+        </Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link href="/">Inicio</Nav.Link>
-          <Nav.Link href="/clientes">Clientes</Nav.Link>
-          <Nav.Link href="/compras">Compras</Nav.Link>
+          <Nav.Link>
+            <NavLink className="nav-link" to="/clientes">
+              Clientes
+            </NavLink>
+          </Nav.Link>
+          <Nav.Link>
+            <NavLink className="nav-link" to="/compras">
+              Compras
+            </NavLink>
+          </Nav.Link>
         </Nav>
       </Container>
     </Navbar>
