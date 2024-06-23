@@ -1,5 +1,9 @@
 import { Container } from "react-bootstrap";
-import { getClientes } from "../../services/ClientesServices";
+import {
+  createCliente,
+  editCliente,
+  getClientes,
+} from "../../services/ClientesServices";
 import ClientesTable from "../../components/ClientesTable";
 import { useEffect, useState } from "react";
 
@@ -9,7 +13,6 @@ const Clientes = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getClientes();
-      console.log(data);
 
       setTimeout(() => {
         setDataClientes(data);
@@ -17,14 +20,29 @@ const Clientes = () => {
     };
 
     fetchData();
-  }, []);
+  }, [dataClientes]);
 
-  const clienteCreate = (nombre, apellido, email) => {
-    alert("Cliente creado correctamente");
+  const clienteCreate = (
+    nombre,
+    apellido,
+    cuitDni,
+    razonSocial,
+    tipoCliente
+  ) => {
+    createCliente(nombre, apellido, cuitDni, razonSocial, tipoCliente);
+    setDataClientes(null);
   };
 
-  const clienteEdit = (nombre, apellido, email) => {
-    alert("Cliente editado correctamente");
+  const clienteEdit = (
+    id,
+    nombre,
+    apellido,
+    cuitDni,
+    razonSocial,
+    tipoCliente
+  ) => {
+    editCliente(id, nombre, apellido, cuitDni, razonSocial, tipoCliente);
+    setDataClientes(null);
   };
 
   return (

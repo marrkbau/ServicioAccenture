@@ -30,31 +30,37 @@ const NuevoClienteModal = ({ open, handleClose, cliente, create, edit }) => {
       setRazonSocial(cliente.razonSocial);
       setTipoCliente(cliente.tipoCliente);
     } else {
-      setNombre("");
-      setApellido("");
-      setCuitDni("");
-      setRazonSocial("");
-      setTipoCliente("");
+      resetStates();
     }
   }, [cliente]);
 
+  const resetStates = () => {
+    setNombre("");
+    setApellido("");
+    setCuitDni("");
+    setRazonSocial("");
+    setTipoCliente("");
+  };
+
   const handleSubmit = (event) => {
+    console.log(nombre, apellido, cuitDni, razonSocial, tipoCliente);
     const form = event.currentTarget;
     event.preventDefault();
     if (form.checkValidity() === false) {
+      setValidated(true);
       alert("Complete los campos requeridos");
     } else {
       cliente
-        ? edit(nombre, apellido, cuitDni, razonSocial, tipoCliente)
+        ? edit(cliente.id, nombre, apellido, cuitDni, razonSocial, tipoCliente)
         : create(nombre, apellido, cuitDni, razonSocial, tipoCliente);
+      resetStates();
       handleClose();
     }
-    setValidated(true);
   };
   return (
     <Modal show={open} onHide={handleClose}>
-      <Modal.Header closeButton style={{backgroundColor:'#550ed4'}} > 
-        <Modal.Title style={{color:"#6cdacd"}}>Alta de Cliente</Modal.Title>
+      <Modal.Header closeButton style={{ backgroundColor: "#550ed4" }}>
+        <Modal.Title style={{ color: "#6cdacd" }}>Alta de Cliente</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -92,12 +98,14 @@ const NuevoClienteModal = ({ open, handleClose, cliente, create, edit }) => {
           </Form.Group>
           <Form.Group className="mb-3" controlId="razonSocial">
             <Form.Label>Razon social</Form.Label>
-            <Form.Select 
+            <Form.Select
               onChange={(e) => setRazonSocial(e.target.value)}
               value={razonSocial}
+              required
             >
+              <option value="">Selecciona una razon social</option>
               {razonSocialOption.map((razon) => (
-                <option key={razon.id} value={razon.razonSocial}>
+                <option key={razon.id} value={razon.id}>
                   {razon.razonSocial}
                 </option>
               ))}
@@ -105,12 +113,14 @@ const NuevoClienteModal = ({ open, handleClose, cliente, create, edit }) => {
           </Form.Group>
           <Form.Group className="mb-3" controlId="tipoCliente">
             <Form.Label>Tipo de cliente</Form.Label>
-            <Form.Select 
+            <Form.Select
               onChange={(e) => setTipoCliente(e.target.value)}
               value={tipoCliente}
+              required
             >
+              <option value="">Selecciona un tipo de cliente</option>
               {tipoClienteOption.map((tipo) => (
-                <option key={tipo.id} value={tipo.tipoCliente}>
+                <option key={tipo.id} value={tipo.id}>
                   {tipo.tipoCliente}
                 </option>
               ))}
