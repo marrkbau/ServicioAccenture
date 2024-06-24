@@ -8,6 +8,7 @@ import {
 import ClientesTable from "../../components/ClientesTable";
 import { useEffect, useState } from "react";
 import ErrorModal from "../../components/ErrorModal";
+import { Navigate } from "react-router-dom";
 
 const Clientes = () => {
   const [dataClientes, setDataClientes] = useState(null);
@@ -75,24 +76,30 @@ const Clientes = () => {
   };
 
   return (
-    <Container>
-      <ErrorModal
-        open={errorOpen}
-        handleClose={() => setErrorOpen(false)}
-        error={error}
-      />
-      <h1>Clientes</h1>
-      {!dataClientes ? (
-        <p>Cargando...</p>
-      ) : (
-        <ClientesTable
-          data={dataClientes}
-          clienteCreate={clienteCreate}
-          clienteEdit={clienteEdit}
-          clienteDelete={clienteDelete}
+    <>
+      {localStorage.getItem("access_token") ? (
+        <Container>
+        <ErrorModal
+          open={errorOpen}
+          handleClose={() => setErrorOpen(false)}
+          error={error}
         />
+        <h1>Clientes</h1>
+        {!dataClientes ? (
+          <p>Cargando...</p>
+        ) : (
+          <ClientesTable
+            data={dataClientes}
+            clienteCreate={clienteCreate}
+            clienteEdit={clienteEdit}
+            clienteDelete={clienteDelete}
+          />
+        )}
+      </Container>
+      ): (
+        <Navigate to="/login" />
       )}
-    </Container>
+    </>
   );
 };
 

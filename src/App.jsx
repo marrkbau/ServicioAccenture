@@ -5,6 +5,7 @@ import Compras from "./pages/compras/Compras";
 import Clientes from "./pages/clientes/Clientes";
 import MainLayout from "./pages/layout/MainLayout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Login from "./pages/login/Login";
 
 function App() {
   const router = createBrowserRouter([
@@ -26,6 +27,14 @@ function App() {
         },
       ],
     },
+    {
+      path:"/login",
+      element: <Login />,
+    },
+    {
+      path: "*",
+      element: <h1>404</h1>,
+    }
   ]);
 
   return (
