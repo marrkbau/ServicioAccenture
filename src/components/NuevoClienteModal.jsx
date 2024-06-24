@@ -20,8 +20,8 @@ const NuevoClienteModal = ({ open, handleClose, cliente, create, edit }) => {
   const [tipoClienteOption, setTipoClienteOption] = useState([]);
 
   useEffect(() => {
-    setRazonSocialOption(getRazonesSociales());
-    setTipoClienteOption(getTipoClientes());
+    
+    fetchData();
 
     if (cliente) {
       setNombre(cliente.nombre);
@@ -33,6 +33,11 @@ const NuevoClienteModal = ({ open, handleClose, cliente, create, edit }) => {
       resetStates();
     }
   }, [cliente]);
+
+  const fetchData = async () => {
+    setRazonSocialOption(await getRazonesSociales());
+    setTipoClienteOption(await getTipoClientes());
+  }
 
   const resetStates = () => {
     setNombre("");
@@ -100,11 +105,11 @@ const NuevoClienteModal = ({ open, handleClose, cliente, create, edit }) => {
             <Form.Label>Razon social</Form.Label>
             <Form.Select
               onChange={(e) => setRazonSocial(e.target.value)}
-              value={razonSocial}
+              value={razonSocial || ""}
               required
             >
               <option value="">Selecciona una razon social</option>
-              {razonSocialOption.map((razon) => (
+              {razonSocialOption?.map((razon) => (
                 <option key={razon.id} value={razon.id}>
                   {razon.razonSocial}
                 </option>
@@ -115,11 +120,11 @@ const NuevoClienteModal = ({ open, handleClose, cliente, create, edit }) => {
             <Form.Label>Tipo de cliente</Form.Label>
             <Form.Select
               onChange={(e) => setTipoCliente(e.target.value)}
-              value={tipoCliente}
+              value={tipoCliente || ""}
               required
             >
               <option value="">Selecciona un tipo de cliente</option>
-              {tipoClienteOption.map((tipo) => (
+              {tipoClienteOption?.map((tipo) => (
                 <option key={tipo.id} value={tipo.id}>
                   {tipo.tipoCliente}
                 </option>

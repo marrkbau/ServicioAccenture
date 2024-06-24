@@ -17,7 +17,9 @@ export async function getClientes() {
   //Estos son los clientes obtenidos de la "response"
   let clientesObtenidos = JSON.parse(localStorage.getItem("clientes"));
 
+  //
   //Fin logicas a modificar
+  //
 
   //Con esto generamos un listado de clientes con la estructura que necesitamos
   const clientes = generarListadoClientes(clientesObtenidos);
@@ -44,12 +46,12 @@ export async function createCliente(
 
   console.log("razonSocial");
   console.log(razonSocial);
-  const razonSocialObj = getRazonesSociales().find(
-    (razon) => razon.id === parseInt(razonSocial)
+  const razonSocialObj = await getRazonesSociales().then((razones) =>
+    razones.find((razon) => razon.id === parseInt(razonSocial))
   );
   console.log(razonSocialObj);
-  const tipoClienteObj = getTipoClientes().find(
-    (tipo) => tipo.id === parseInt(tipoCliente)
+  const tipoClienteObj = await getTipoClientes().then((tipos) =>
+    tipos.find((tipo) => tipo.id === parseInt(tipoCliente))
   );
   const clientes = await getClientes();
   const newCliente = {
@@ -79,11 +81,11 @@ export async function editCliente(
   }
   const clientes = await getClientes();
   const index = clientes.findIndex((cliente) => cliente.id === id);
-  const razonSocialObj = getRazonesSociales().find(
-    (razon) => razon.id === parseInt(razonSocial)
+  const razonSocialObj = await getRazonesSociales().then((razones) =>
+    razones.find((razon) => razon.id === parseInt(razonSocial))
   );
-  const tipoClienteObj = getTipoClientes().find(
-    (tipo) => tipo.id === parseInt(tipoCliente)
+  const tipoClienteObj = await getTipoClientes().then((tipos) =>
+    tipos.find((tipo) => tipo.id === parseInt(tipoCliente))
   );
   clientes[index] = {
     id,
@@ -128,8 +130,9 @@ function generarListadoClientes(clientesObtenidos) {
   });
 }
 
-export function getRazonesSociales() {
-  //TODO: Logica a modificar
+export async function getRazonesSociales() {
+  //TODO: Logica a modificar. Obtener las razones sociales del backend
+  await esperar(200);
   return [
     {
       id: 1,
@@ -142,8 +145,9 @@ export function getRazonesSociales() {
   ];
 }
 
-export function getTipoClientes() {
-  //TODO: Logica a modificar
+export async function getTipoClientes() {
+  //TODO: Logica a modificar. Obtener los tipos de clientes del backend
+  await esperar(200);
   return [
     {
       id: 1,
