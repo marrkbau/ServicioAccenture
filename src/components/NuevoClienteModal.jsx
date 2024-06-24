@@ -27,8 +27,8 @@ const NuevoClienteModal = ({ open, handleClose, cliente, create, edit }) => {
       setNombre(cliente.nombre);
       setApellido(cliente.apellido);
       setCuitDni(cliente.cuitDni);
-      setRazonSocial(cliente.razonSocial);
-      setTipoCliente(cliente.tipoCliente);
+      setRazonSocial(cliente.razonSocial.id);
+      setTipoCliente(cliente.tipoCliente.id);
     } else {
       resetStates();
     }

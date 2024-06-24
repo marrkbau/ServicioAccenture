@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import NuevoClienteModal from "./NuevoClienteModal";
 import { useState } from "react";
 
-const ClientesTable = ({ data, clienteCreate, clienteEdit }) => {
+const ClientesTable = ({ data, clienteCreate, clienteEdit, clienteDelete }) => {
   const [openModal, setOpenModal] = useState(false);
   const [cliente, setCliente] = useState(null);
 
@@ -35,8 +35,8 @@ const ClientesTable = ({ data, clienteCreate, clienteEdit }) => {
     handleOpenModal();
   };
 
-  const handleDelete = (cliente) => {
-    alert("Cliente eliminado correctamente");
+  const handleOnDelete = (cliente) => {
+    clienteDelete(cliente);
   };
 
   return (
@@ -76,9 +76,9 @@ const ClientesTable = ({ data, clienteCreate, clienteEdit }) => {
               <td className="text-center">{row.id}</td>
               <td className="text-center">{row.nombre}</td>
               <td className="text-center">{row.apellido}</td>
-              <td className="text-center">{row.razonSocial}</td>
+              <td className="text-center">{row.razonSocial.razonSocial}</td>
               <td className="text-center">{row.cuitDni}</td>
-              <td className="text-center">{row.tipoCliente}</td>
+              <td className="text-center">{row.tipoCliente.tipoCliente}</td>
               <td className="text-center">
                 <Button
                   onClick={() => handleOnEdit(row)}
@@ -88,7 +88,7 @@ const ClientesTable = ({ data, clienteCreate, clienteEdit }) => {
                   Editar
                 </Button>
                 <Button
-                  onClick={() => handleDelete(row)}
+                  onClick={() => handleOnDelete(row)}
                   className="m-2"
                   variant="danger"
                 >

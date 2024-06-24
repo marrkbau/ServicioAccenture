@@ -1,39 +1,50 @@
 import { Container } from "react-bootstrap";
 import {
   createCliente,
+  deleteCliente,
   editCliente,
   getClientes,
 } from "../../services/ClientesServices";
 import ClientesTable from "../../components/ClientesTable";
 import { useEffect, useState } from "react";
+import ErrorModal from "../../components/ErrorModal";
 
 const Clientes = () => {
   const [dataClientes, setDataClientes] = useState(null);
+  const [errorOpen, setErrorOpen] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getClientes();
-
-      setTimeout(() => {
-        setDataClientes(data);
-      }, 2000);
-    };
-
     fetchData();
-  }, [dataClientes]);
+  }, []);
 
-  const clienteCreate = (
+  const fetchData = async () => {
+    try {
+      const data = await getClientes();
+      setDataClientes(data);
+    } catch (error) {
+      setErrorOpen(true);
+      setError(error.message);
+    }
+  };
+
+  const clienteCreate = async (
     nombre,
     apellido,
     cuitDni,
     razonSocial,
     tipoCliente
   ) => {
-    createCliente(nombre, apellido, cuitDni, razonSocial, tipoCliente);
-    setDataClientes(null);
+    try {
+      await createCliente(nombre, apellido, cuitDni, razonSocial, tipoCliente);
+      setDataClientes(await getClientes());
+    } catch (error) {
+      setErrorOpen(true);
+      setError(error.message);
+    }
   };
 
-  const clienteEdit = (
+  const clienteEdit = async (
     id,
     nombre,
     apellido,
@@ -41,12 +52,35 @@ const Clientes = () => {
     razonSocial,
     tipoCliente
   ) => {
-    editCliente(id, nombre, apellido, cuitDni, razonSocial, tipoCliente);
-    setDataClientes(null);
+    try {
+      await editCliente(
+        id,
+        nombre,
+        apellido,
+        cuitDni,
+        razonSocial,
+        tipoCliente
+      );
+      setDataClientes(await getClientes());
+    } catch (error) {
+      setErrorOpen(true);
+      setError(error.message);
+      console.error(error);
+    }
+  };
+
+  const clienteDelete = async (client) => {
+    await deleteCliente(client.id);
+    setDataClientes(await getClientes());
   };
 
   return (
     <Container>
+      <ErrorModal
+        open={errorOpen}
+        handleClose={() => setErrorOpen(false)}
+        error={error}
+      />
       <h1>Clientes</h1>
       {!dataClientes ? (
         <p>Cargando...</p>
@@ -55,6 +89,7 @@ const Clientes = () => {
           data={dataClientes}
           clienteCreate={clienteCreate}
           clienteEdit={clienteEdit}
+          clienteDelete={clienteDelete}
         />
       )}
     </Container>

@@ -4,26 +4,34 @@ import { useEffect, useState } from "react";
 import Resumen from "../../components/Resumen";
 import { getClientes } from "../../services/ClientesServices";
 import { getProductos } from "../../services/ProductosServices";
+import ErrorModal from "../../components/ErrorModal";
 
 const Compras = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectedClient, setSelectedClient] = useState("");
   const [dataClients, setDataClients] = useState(null);
   const [dataProducts, setDataProducts] = useState(null);
+  const [errorOpen, setErrorOpen] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
       const dataClient = await getClientes();
       const dataProduct = await getProductos();
-
       setTimeout(() => {
         setDataClients(dataClient);
         setDataProducts(dataProduct);
       }, 2000);
-    };
+    } catch (error) {
+      setErrorOpen(true);
+      setError(error.message);
+    }
 
-    fetchData();
-  });
+  };
 
   const handleSelectProduct = (product) => {
     if (selectedProducts.find((p) => p.id === product.id)) {
@@ -58,6 +66,7 @@ const Compras = () => {
 
   return (
     <Container>
+      <ErrorModal open={errorOpen} handleClose={() => setErrorOpen(false)} error={error} />
       {!dataClients || !dataProducts ? (
         <p>Cargando...</p>
       ) : (
