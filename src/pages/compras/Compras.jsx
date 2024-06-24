@@ -6,6 +6,7 @@ import { getClientes } from "../../services/ClientesServices";
 import { getProductos } from "../../services/ProductosServices";
 import ErrorModal from "../../components/ErrorModal";
 import { Navigate } from "react-router-dom";
+import { creteCompra } from "../../services/ComprasService";
 
 const Compras = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -56,12 +57,21 @@ const Compras = () => {
     );
   };
 
-  const createCompra = (fechaEntrega, selectedProducts, selectedClient) => {
-    alert("Compra generada " + fechaEntrega);
-    alert("Cliente: " + selectedClient.nombre);
-    alert("Productos: " + selectedProducts.map((p) => p.nombre));
-    setSelectedClient("");
-    setSelectedProducts([]);
+  const createCompra = async (
+    fechaEntrega,
+    selectedProducts,
+    selectedClient
+  ) => {
+    try {
+      
+      await creteCompra(fechaEntrega, selectedProducts, selectedClient);
+      setSelectedClient("");
+      setSelectedProducts([]);
+      
+    } catch (error) {
+      setErrorOpen(true);
+      setError(error.message);
+    }
   };
 
   return (
