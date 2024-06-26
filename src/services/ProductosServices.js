@@ -1,7 +1,17 @@
+import axios from "axios";
+
+const urlBack = 'http//localhost:8081/'
+
 export async function getProductos() {
   //TODO: Logica a modificar
-  // Se debe realizar la request al backend para obtener los productos
 
+  let productosObtenidos = await axios
+  .get(`${urlBack}productos`)
+  .then((response) => response.data);
+
+
+  // Se debe realizar la request al backend para obtener los productos
+  /*
   if (!localStorage.getItem("productos")) {
     const productos = getPorductosManual();
     localStorage.setItem("productos", JSON.stringify(productos));
@@ -17,7 +27,7 @@ export async function getProductos() {
 
   //Estos son los productos obtenidos de la "response"
   let productosObtenidos = JSON.parse(localStorage.getItem("productos"));
-
+  */
 
   //Genero el listado de productos
   let productos = generarListadoProductos(productosObtenidos);

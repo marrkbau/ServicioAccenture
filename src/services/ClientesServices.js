@@ -1,7 +1,17 @@
+import axios from 'axios';
+
+const urlBack = 'http://localhost:8081/'
+
 export async function getClientes() {
+
+  
+  let clientesObtenidos = await axios
+  .get(`${urlBack}clientes`)
+  .then((response) => response.data);
+  
   //TODO: Logica a modificar
   // Se debe realizar la request al backend para obtener los clientes
-
+  /*
   if (!localStorage.getItem("clientes")) {
     const clientes = getListadoClientesManual();
     localStorage.setItem("clientes", JSON.stringify(clientes));
@@ -16,10 +26,10 @@ export async function getClientes() {
 
   //Estos son los clientes obtenidos de la "response"
   let clientesObtenidos = JSON.parse(localStorage.getItem("clientes"));
-
+  
   //
   //Fin logicas a modificar
-  //
+  //*/
 
   //Con esto generamos un listado de clientes con la estructura que necesitamos
   const clientes = generarListadoClientes(clientesObtenidos);
@@ -34,36 +44,49 @@ export async function createCliente(
   razonSocial,
   tipoCliente
 ) {
-  //! IMPORTANTE: tipoCliente y razonSocial son IDs, no un objeto completo
+  //! IMPORTANTE: tipoCliente y razonSocial son nombres, no un objeto completo
 
-  //TODO: Logica a modificar
-  // Se debe realizar la request al backend para crear el cliente
-
-  const simularError = false;
-  if (simularError) {
-    throw new Error("Error al crear el cliente");
-  }
-
-  console.log("razonSocial");
-  console.log(razonSocial);
-  const razonSocialObj = await getRazonesSociales().then((razones) =>
-    razones.find((razon) => razon.id === parseInt(razonSocial))
-  );
-  console.log(razonSocialObj);
-  const tipoClienteObj = await getTipoClientes().then((tipos) =>
-    tipos.find((tipo) => tipo.id === parseInt(tipoCliente))
-  );
-  const clientes = await getClientes();
   const newCliente = {
-    id: clientes.length + 1,
     nombre,
     apellido,
     cuitDni,
-    razonSocial: razonSocialObj,
-    tipoCliente: tipoClienteObj,
+    razonSocial, // Enviar como string
+    tipoCliente, // Enviar como string
   };
-  clientes.push(newCliente);
-  localStorage.setItem("clientes", JSON.stringify(clientes));
+
+  try {
+    const response = await axios.post(`${urlBack}clientes`, newCliente);
+    return response.data; // Devuelve el cliente creado por el backend
+  } catch (error) {
+    throw new Error('Error al crear el cliente: ' + error.message);
+  }
+
+
+  // const simularError = false;
+  // if (simularError) {
+  //   throw new Error("Error al crear el cliente");
+  // }
+
+  // console.log("razonSocial");
+  // console.log(razonSocial);
+  // const razonSocialObj = await getRazonesSociales().then((razones) =>
+  //   razones.find((razon) => razon.id === parseInt(razonSocial))
+  // );
+  // console.log(razonSocialObj);
+  // const tipoClienteObj = await getTipoClientes().then((tipos) =>
+  //   tipos.find((tipo) => tipo.id === parseInt(tipoCliente))
+  // );
+  // const clientes = await getClientes();
+  // const newCliente = {
+  //   id: clientes.length + 1,
+  //   nombre,
+  //   apellido,
+  //   cuitDni,
+  //   razonSocial: razonSocialObj,
+  //   tipoCliente: tipoClienteObj,
+  // };
+  // clientes.push(newCliente);
+  // localStorage.setItem("clientes", JSON.stringify(clientes));
   //
 }
 

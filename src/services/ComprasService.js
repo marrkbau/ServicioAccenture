@@ -1,23 +1,26 @@
+import axios from "axios";
+
+const urlBack='http://localhost:8082/'
+
 export async function creteCompra(fechaEntrega, selectedProducts, selectedClient) {
+  //! IMPORTANTE: La cantidad de cada producto se encuentra seteada en la propiedad "cantidad" de cada producto
+  //! Cliente es un objeto
 
-    
-    //! IMPORTANTE: La cantidad de cada producto se encuentra seteada en la propiedad "cantidad" de cada producto
-    //! Cliente es un objeto
-    //TODO: Logica a modificar. Crear la compra en el backend
+  const newCompra = {
+      fechaEntrega,
+      clienteId: selectedClient.id,
+      productos: selectedProducts.map(product => ({
+          productoId: product.id,
+          cantidad: product.cantidad,
+      })),
+  };
 
-    // Simular error
-    const simularError = false;
-    if (simularError) {
-        throw new Error("Error al crear la compra");
-    }
-
-    await esperar(2000);
-    console.log("Compra creada");
-    console.log(fechaEntrega);
-    console.log(selectedProducts);
-    console.log(selectedClient);
-
-
+  try {
+      const response = await axios.post(`${urlBack}compras`, newCompra);
+      return response.data; // Devuelve la compra creada por el backend
+  } catch (error) {
+      throw new Error('Error al crear la compra: ' + error.message);
+  }
 }
 
 
