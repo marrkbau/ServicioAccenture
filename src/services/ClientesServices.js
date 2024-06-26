@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const urlBack = 'http://localhost:8081/'
+const urlBack = 'http://localhost:8085/'
 
 export async function getClientes() {
 
@@ -46,12 +46,18 @@ export async function createCliente(
 ) {
   //! IMPORTANTE: tipoCliente y razonSocial son nombres, no un objeto completo
 
+  const razonSocialObj = await getRazonesSociales().then((razones) =>
+    razones.find((razon) => razon.id === parseInt(razonSocial))
+  );
+  const tipoClienteObj = await getTipoClientes().then((tipos) =>
+    tipos.find((tipo) => tipo.id === parseInt(tipoCliente))
+  );
   const newCliente = {
-    nombre,
-    apellido,
-    cuitDni,
-    razonSocial, // Enviar como string
-    tipoCliente, // Enviar como string
+    nombre: nombre,
+    apellido: apellido,
+    cuitDni: cuitDni,
+    razonSocial : razonSocialObj.razonSocial, // Enviar como string
+    tipoCliente: tipoClienteObj.tipoCliente, // Enviar como string
   };
 
   try {
@@ -98,56 +104,63 @@ export async function editCliente(
   razonSocial,
   tipoCliente
 ) {
-  const simularError = false;
-  if (simularError) {
-    throw new Error("Error al editar el cliente");
-  }
-  const clientes = await getClientes();
-  const index = clientes.findIndex((cliente) => cliente.id === id);
   const razonSocialObj = await getRazonesSociales().then((razones) =>
     razones.find((razon) => razon.id === parseInt(razonSocial))
   );
   const tipoClienteObj = await getTipoClientes().then((tipos) =>
     tipos.find((tipo) => tipo.id === parseInt(tipoCliente))
   );
-  clientes[index] = {
-    id,
-    nombre,
-    apellido,
-    razonSocial: razonSocialObj,
-    cuitDni,
-    tipoCliente: tipoClienteObj,
+  const newCliente = {
+    nombre: nombre,
+    apellido: apellido,
+    cuitDni: cuitDni,
+    razonSocial : razonSocialObj.razonSocial, // Enviar como string
+    tipoCliente: tipoClienteObj.tipoCliente, // Enviar como string
   };
-  localStorage.setItem("clientes", JSON.stringify(clientes));
+
+  console.log("antes de enviar al back");
+  console.log(newCliente);
+  try {
+    const response = await axios.put(`${urlBack}clientes/${id}`, newCliente);
+    console.log("despues de enviar al back");
+    console.log(newCliente);
+    return response.data; // Devuelve el cliente creado por el backend
+  } catch (error) {
+    throw new Error('Error al editar el cliente: ' + error.message);
+  }
+
 }
 
 export async function deleteCliente(id) {
   //TODO: Logica a modificar
-
-  const simularError = false;
-  if (simularError) {
-    throw new Error("Error al eliminar el cliente");
+  try {
+    const response = await axios.delete(`${urlBack}clientes/${id}`);
+    return response.data; // Devuelve el cliente creado por el backend
+  } catch (error) {
+    throw new Error('Error al borrar el cliente: ' + error.message);
   }
-  const clientes = await getClientes();
-  const newClientes = clientes.filter((cliente) => cliente.id !== parseInt(id));
-  localStorage.setItem("clientes", JSON.stringify(newClientes));
+
 }
 
 function generarListadoClientes(clientesObtenidos) {
+  console.log(clientesObtenidos);
   return clientesObtenidos.map((cliente) => {
     return {
       //Aca se mapean los campos que necesitamos para mostrar en la tabla
       id: cliente.id,
       nombre: cliente.nombre,
       apellido: cliente.apellido,
-      razonSocial: {
-        id: cliente.razonSocial.id,
-        razonSocial: cliente.razonSocial.razonSocial,
+      puntos: cliente.puntos,
+      categoria: {
+        nivel: cliente.categoria.tipoCategoria.nivel,
       },
-      cuitDni: cliente.cuitDni,
+      razonSocial: {
+        id: cliente.categoria.id,
+        razonSocial: cliente.razonSocial,
+      },
+      cuitDni: cliente.cuit,
       tipoCliente: {
-        id: cliente.tipoCliente.id,
-        tipoCliente: cliente.tipoCliente.tipoCliente,
+        tipoCliente: cliente.tipoCliente.toUpperCase(),
       },
     };
   });
@@ -159,12 +172,20 @@ export async function getRazonesSociales() {
   return [
     {
       id: 1,
-      razonSocial: "Razon Social 1",
+      razonSocial: "Persona Natural",
     },
     {
       id: 2,
-      razonSocial: "Razon Social 2",
+      razonSocial: "Persona Juridica",
     },
+    {
+      id: 3,
+      razonSocial: "Sociedad Anónima",
+    },
+    {
+      id: 4,
+      razonSocial: "S.R.L",
+    }
   ];
 }
 

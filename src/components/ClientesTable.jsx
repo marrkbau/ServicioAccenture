@@ -12,9 +12,12 @@ const ClientesTable = ({ data, clienteCreate, clienteEdit, clienteDelete }) => {
     "Nombre",
     "Apellido",
     "Razon Social",
-    "CUIT/DNI",
+    "CUIT",
     "Tipo Cliente",
-    "Acciones",
+    "Categoria",
+    "Puntos",
+    "Acciones"
+    
   ];
 
   const handleCloseModal = () => {
@@ -79,6 +82,8 @@ const ClientesTable = ({ data, clienteCreate, clienteEdit, clienteDelete }) => {
               <td className="text-center">{row.razonSocial.razonSocial}</td>
               <td className="text-center">{row.cuitDni}</td>
               <td className="text-center">{row.tipoCliente.tipoCliente}</td>
+              <td className="text-center">{row.categoria.nivel}</td>
+              <td className="text-center">{row.puntos}</td>
               <td className="text-center">
                 <Button
                   onClick={() => handleOnEdit(row)}

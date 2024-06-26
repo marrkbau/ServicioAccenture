@@ -6,7 +6,7 @@ export async function creteCompra(fechaEntrega, selectedProducts, selectedClient
   //! IMPORTANTE: La cantidad de cada producto se encuentra seteada en la propiedad "cantidad" de cada producto
   //! Cliente es un objeto
 
-  const newCompra = {
+  /*const newCompra = {
       fechaEntrega,
       clienteId: selectedClient.id,
       productos: selectedProducts.map(product => ({
@@ -20,7 +20,7 @@ export async function creteCompra(fechaEntrega, selectedProducts, selectedClient
       return response.data; // Devuelve la compra creada por el backend
   } catch (error) {
       throw new Error('Error al crear la compra: ' + error.message);
-  }
+  }*/
 }
 
 

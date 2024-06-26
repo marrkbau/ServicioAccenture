@@ -3,11 +3,18 @@ import axios from "axios";
 const urlBack = 'http//localhost:8081/'
 
 export async function getProductos() {
-  //TODO: Logica a modificar
 
   let productosObtenidos = await axios
   .get(`${urlBack}productos`)
   .then((response) => response.data);
+  let productos = generarListadoProductos(productosObtenidos);
+  return productos;
+
+  //TODO: Logica a modificar
+
+  //let productosObtenidos = await axios
+  //.get(`${urlBack}productos`)
+  //.then((response) => response.data);
 
 
   // Se debe realizar la request al backend para obtener los productos
@@ -30,8 +37,8 @@ export async function getProductos() {
   */
 
   //Genero el listado de productos
-  let productos = generarListadoProductos(productosObtenidos);
-  return productos;
+  //let productos = generarListadoProductos(productosObtenidos);
+  //return productos;
 }
 
 function generarListadoProductos(productosObtenidos) {
@@ -39,9 +46,9 @@ function generarListadoProductos(productosObtenidos) {
   return productosObtenidos.map((producto) => ({
     id: producto.id,
     nombre: producto.nombre,
-    proveedor: producto.proveedor.nombre,
-    precio: producto.precio,
-    stock: producto.stock,
+    proveedor: producto.proveedorId,
+    precio: producto.precioVenta,
+    stock: producto.stockOrdenesReposicion,
   }));
 }
 
