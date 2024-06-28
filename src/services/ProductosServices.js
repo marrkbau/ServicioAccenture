@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const urlBack = 'http://localhost:8081/'
+const urlBack = 'http://localhost:8080/'
 
 export async function getProductos() {
 
@@ -48,7 +48,8 @@ function generarListadoProductos(productosObtenidos) {
     nombre: producto.nombre,
     proveedor: producto.proveedorId,
     precio: producto.precioVenta,
-    stock: producto.stockOrdenesReposicion,
+    stock: producto.stockActual,
+    proveedor: producto.proveedorNombre,
   }));
 }
 

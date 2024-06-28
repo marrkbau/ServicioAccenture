@@ -4,6 +4,11 @@ const urlBack='http://localhost:8082/'
 
 export async function creteCompra(fechaEntrega, selectedProducts, selectedClient) {
 
+  console.log(selectedProducts.map(product => ({
+    idProducto: product.id,
+    cantidad: product.cantidad,
+  }))
+  );
   const newCompra = {
     fechaEntrega,
     idCliente: selectedClient.id,
