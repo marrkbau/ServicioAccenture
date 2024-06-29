@@ -131,7 +131,6 @@ const NuevoClienteModal = ({ open, handleClose, cliente, create, edit }) => {
               ))}
             </Form.Select>
           </Form.Group>
-          <Button type="submit">Guardar</Button>
         </Form>
       </Modal.Body>
       <Modal.Footer>
